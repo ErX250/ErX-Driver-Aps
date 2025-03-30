@@ -14,20 +14,6 @@ header {
   align-items: center;
 }
 
-#login-screen {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-#login-screen input {
-  padding: 0.5rem;
-  width: 200px;
-}
-
 #map {
   height: 70vh;
   width: 100%;
@@ -60,6 +46,7 @@ button:hover {
   border-radius: 6px;
   font-size: 13px;
   font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .dark-mode {
@@ -69,4 +56,37 @@ button:hover {
 
 .dark-mode header {
   background: #000;
+}
+
+/* Giriş ekranı */
+#login-screen {
+  height: 100vh;
+  background: linear-gradient(to right, #f4f4f4, #eaeaea);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 300px;
+}
+
+.driver-icon {
+  width: 60px;
+  margin-bottom: 1rem;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
 }
