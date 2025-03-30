@@ -129,15 +129,15 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Siyah araç simgesi
+    // ✅ Siyah araba simgesi (önbellek sorunu yaşamaz)
     const carIcon = L.icon({
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/854/854894.png', // siyah araba
+      iconUrl: 'https://cdn-icons-png.flaticon.com/128/9790/9790405.png',
       iconSize: [48, 48],
       iconAnchor: [24, 24],
     });
 
-    // Araç simülasyonu
     const car = L.marker([28.3852, -81.5639], { icon: carIcon }).addTo(map);
+
     const route = [
       [28.3852, -81.5639],
       [28.3870, -81.5645],
@@ -145,6 +145,7 @@
       [28.3860, -81.5605],
       [28.3840, -81.5618]
     ];
+
     let step = 0;
     setInterval(() => {
       car.setLatLng(route[step]);
