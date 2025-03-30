@@ -90,23 +90,60 @@
       border-radius: 6px;
       cursor: pointer;
     }
+
+    /* Giriş ekranı */
+    .main-selection {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 999;
+    }
+
+    .main-selection button {
+      background-color: #007bff;
+      color: white;
+      padding: 15px 30px;
+      font-size: 18px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 50px;
+    }
+
+    /* Driver formu */
+    #driverForm {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    #driverForm input, #driverForm button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
 
   <!-- START: YOLCU VE DRIVER SEÇİM EKRANI -->
-  <div class="main-selection">
+  <div class="main-selection" id="mainSelection">
     <button onclick="startAsPassenger()">Ben Bir Yolcuyum</button>
     <button onclick="startAsDriver()">Ben Bir Driver'ım</button>
   </div>
   <!-- END: YOLCU VE DRIVER SEÇİM EKRANI -->
 
-  <div id="map"></div>
-  <div class="earnings-badge">$89.93</div>
-  <button class="start-button" onclick="startTrip()">BAŞLA</button>
-
-  <!-- DRIVER KAYIT FORMU -->
-  <div id="driverForm" style="display: none;">
+  <!-- START: DRIVER KAYIT FORMU -->
+  <div id="driverForm">
     <h2>Driver Kayıt Formu</h2>
     <form>
       <input type="text" placeholder="Ad Soyad" required><br>
@@ -119,6 +156,10 @@
     </form>
   </div>
   <!-- END: DRIVER KAYIT FORMU -->
+
+  <div id="map"></div>
+  <div class="earnings-badge">$89.93</div>
+  <button class="start-button" onclick="startTrip()">BAŞLA</button>
 
   <div class="popup-box" id="orderPopup">
     <strong>📦 Sipariş Alındı</strong><br />
@@ -162,6 +203,7 @@
 
     function startAsDriver() {
       document.querySelector('#driverForm').style.display = 'block';
+      document.querySelector('#mainSelection').style.display = 'none';
     }
 
     function startTrip() {
