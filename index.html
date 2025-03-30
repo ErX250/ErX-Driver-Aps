@@ -8,14 +8,17 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 </head>
 <body>
-  <!-- Login ekranı -->
+  <!-- Giriş Ekranı -->
   <div id="login-screen">
-    <h2>Welcome to ErX Driver</h2>
-    <input type="text" placeholder="Enter your driver ID" />
-    <button onclick="enterApp()">Login</button>
+    <div class="login-box">
+      <img src="https://cdn-icons-png.flaticon.com/512/1177/1177568.png" alt="Driver Icon" class="driver-icon" />
+      <h2>Welcome to <span style="color:#007bff">ErX Driver</span></h2>
+      <input type="text" placeholder="Enter your Driver ID" />
+      <button onclick="enterApp()">Login</button>
+    </div>
   </div>
 
-  <!-- Uygulama içi -->
+  <!-- Uygulama Arayüzü -->
   <div id="app" style="display:none;">
     <header>
       <h1>ErX Driver - Live Map</h1>
