@@ -3,49 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ErX Driver Dashboard</title>
+  <title>ErX Driver Map</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 </head>
 <body>
-  <header>
-    <h1>ErX Driver</h1>
-    <nav>
-      <ul>
-        <li><a href="#">Map</a></li>
-        <li><a href="#">Promotions</a></li>
-        <li><a href="#">Statistics</a></li>
-      </ul>
-    </nav>
-  </header>
+  <h1 class="title">ErX Driver - Live Map</h1>
+  <div id="map"></div>
 
-  <main>
-    <section class="map">
-      <h2>Live Map Area</h2>
-      <div class="map-placeholder">[Map will be here]</div>
-    </section>
-
-    <section class="stats">
-      <h2>Driver Statistics</h2>
-      <ul>
-        <li>Trips today: 4</li>
-        <li>Online hours: 3h 45min</li>
-        <li>Earnings: $96.20</li>
-      </ul>
-    </section>
-
-    <section class="promos">
-      <h2>Available Promotions</h2>
-      <ul>
-        <li>🔥 Earn extra $20 for 5 trips between 5–8 PM</li>
-        <li>💰 10% Bonus in Downtown area this weekend</li>
-      </ul>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2025 ErX Technologies</p>
-  </footer>
-
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
