@@ -94,26 +94,31 @@
 </head>
 <body>
 
-  <div class="sidebar">
-    <h2>ErX Driver</h2>
-    <ul>
-      <li>Gelen Kutusu</li>
-      <li>Tavsiyeler</li>
-      <li>Fırsatlar</li>
-      <li>📢 Promosyonlar</li>
-      <li>Kazançlar</li>
-      <li>Cüzdan</li>
-      <li>Hesap</li>
-      <hr style="margin: 12px 0; border: none; border-top: 1px solid #555;" />
-      <li>Yardım Merkezi</li>
-      <li>Eğitim Merkezi</li>
-      <li>Canlı Destek</li>
-    </ul>
+  <!-- START: YOLCU VE DRIVER SEÇİM EKRANI -->
+  <div class="main-selection">
+    <button onclick="startAsPassenger()">Ben Bir Yolcuyum</button>
+    <button onclick="startAsDriver()">Ben Bir Driver'ım</button>
   </div>
+  <!-- END: YOLCU VE DRIVER SEÇİM EKRANI -->
 
   <div id="map"></div>
   <div class="earnings-badge">$89.93</div>
   <button class="start-button" onclick="startTrip()">BAŞLA</button>
+
+  <!-- DRIVER KAYIT FORMU -->
+  <div id="driverForm" style="display: none;">
+    <h2>Driver Kayıt Formu</h2>
+    <form>
+      <input type="text" placeholder="Ad Soyad" required><br>
+      <input type="text" placeholder="Telefon Numarası" required><br>
+      <input type="email" placeholder="E-posta" required><br>
+      <input type="text" placeholder="Sosyal Güvenlik Numarası" required><br>
+      <input type="text" placeholder="Adres" required><br>
+      <input type="file" accept="image/*" placeholder="Ehliyet Fotoğrafı" required><br>
+      <button type="submit">Başvuruyu Gönder</button>
+    </form>
+  </div>
+  <!-- END: DRIVER KAYIT FORMU -->
 
   <div class="popup-box" id="orderPopup">
     <strong>📦 Sipariş Alındı</strong><br />
@@ -128,17 +133,13 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // 👇🏻 Araba ikonu (car-icon.png'yi GitHub'a yüklediysen bu çalışır)
     const carIcon = L.icon({
-      iconUrl: 'car-icon.png',
+      iconUrl: 'car-icon.png', 
       iconSize: [48, 48],
       iconAnchor: [24, 24],
     });
 
-    const car = L.marker([28.3852, -81.5639], {
-      icon: carIcon
-    }).addTo(map);
-
+    const car = L.marker([28.3852, -81.5639], { icon: carIcon }).addTo(map);
     const route = [
       [28.3852, -81.5639],
       [28.3870, -81.5645],
@@ -154,50 +155,21 @@
       step = (step + 1) % route.length;
     }, 2000);
 
-    // 🔥 Heatmap
-    const heat = L.heatLayer([
-      [28.387, -81.561, 0.8],
-      [28.388, -81.565, 0.6],
-      [28.389, -81.562, 0.9],
-    ], {
-      radius: 45,
-      blur: 35,
-      gradient: {0.4: 'orange', 0.7: 'red'}
-    }).addTo(map);
+    function startAsPassenger() {
+      alert("Yolcu olarak giriş yapıyorsunuz");
+      // Burada yolcu yönlendirmesini yapabilirsin
+    }
 
-    // 🏷️ Etiketler
-    L.marker([28.388, -81.565]).addTo(map).bindPopup("<b>+6 BUSY</b>");
-    L.marker([28.387, -81.561]).addTo(map).bindPopup("<b>+25 VERY BUSY</b>");
-
-    // 📍 Yolcu konumu (örnek)
-    const passengerLatLng = [28.3905, -81.5600];
-    const passengerMarker = L.marker(passengerLatLng, {
-      icon: L.icon({
-        iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-        iconSize: [36, 36],
-        iconAnchor: [18, 36],
-      })
-    }).addTo(map).bindPopup("📍 Yolcu Konumu");
-
-    // 🛣️ Rota çizgisi (araçtan yolcuya)
-    const polyline = L.polyline([route[0], passengerLatLng], {
-      color: 'blue',
-      weight: 4,
-      opacity: 0.7,
-      dashArray: '6, 6'
-    }).addTo(map);
-
-    // 📦 Sipariş popup
-    setTimeout(() => {
-      document.getElementById('orderPopup').style.display = 'block';
-    }, 5000);
-
-    function hidePopup() {
-      document.getElementById('orderPopup').style.display = 'none';
+    function startAsDriver() {
+      document.querySelector('#driverForm').style.display = 'block';
     }
 
     function startTrip() {
       alert("Sürüş başlatıldı!");
+    }
+
+    function hidePopup() {
+      document.getElementById('orderPopup').style.display = 'none';
     }
   </script>
 
