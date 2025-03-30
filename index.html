@@ -3,19 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ErX Driver Map</title>
-
-  <!-- Harita CSS'i -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <title>ErX Driver</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 </head>
 <body>
-  <h1 class="title">ErX Driver - Live Map</h1>
+  <!-- Login ekranı -->
+  <div id="login-screen">
+    <h2>Welcome to ErX Driver</h2>
+    <input type="text" placeholder="Enter your driver ID" />
+    <button onclick="enterApp()">Login</button>
+  </div>
 
-  <!-- Haritanın yerleşeceği alan -->
-  <div id="map"></div>
+  <!-- Uygulama içi -->
+  <div id="app" style="display:none;">
+    <header>
+      <h1>ErX Driver - Live Map</h1>
+      <button onclick="toggleDarkMode()">🌓</button>
+    </header>
 
-  <!-- Leaflet kütüphanesi -->
+    <div id="map"></div>
+
+    <div id="controls">
+      <button onclick="startShift()">▶ Start Shift</button>
+      <button onclick="stopShift()">⏹ Stop Shift</button>
+    </div>
+
+    <div id="earnings">
+      <p>Trips Today: <span id="trips">0</span></p>
+      <p>Total Earnings: $<span id="total">0.00</span></p>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
