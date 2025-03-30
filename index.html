@@ -91,18 +91,6 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
-    .busy-label, .verybusy-label {
-      position: absolute;
-      padding: 4px 8px;
-      border-radius: 5px;
-      font-weight: bold;
-      color: white;
-      z-index: 998;
-    }
-
-    .busy-label { background: orange; }
-    .verybusy-label { background: crimson; }
   </style>
 </head>
 <body>
@@ -135,30 +123,32 @@
   </div>
 
   <script>
-    const map = L.map('map').setView([28.3852, -81.5639], 14);
+    const map = L.map('map').setView([28.3852, -81.5639], 15);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Araç simülasyonu
+    // Büyük araç simgesi
     const carIcon = L.icon({
       iconUrl: 'https://cdn-icons-png.flaticon.com/512/854/854894.png',
-      iconSize: [32, 32],
-      iconAnchor: [16, 16],
+      iconSize: [48, 48],
+      iconAnchor: [24, 24],
     });
 
+    // Araç simülasyonu
     const car = L.marker([28.3852, -81.5639], { icon: carIcon }).addTo(map);
     const route = [
       [28.3852, -81.5639],
-      [28.388, -81.565],
-      [28.389, -81.562],
-      [28.387, -81.560],
-      [28.384, -81.561]
+      [28.3870, -81.5645],
+      [28.3885, -81.5620],
+      [28.3860, -81.5605],
+      [28.3840, -81.5618]
     ];
     let step = 0;
     setInterval(() => {
       car.setLatLng(route[step]);
+      map.panTo(route[step]);
       step = (step + 1) % route.length;
     }, 2000);
 
