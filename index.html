@@ -4,41 +4,236 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ErX Driver</title>
-  <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+    }
+    #sidebar {
+      width: 260px;
+      background: #111;
+      color: white;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    #sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 1rem;
+    }
+    #sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    #sidebar ul li {
+      margin-bottom: 12px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #sidebar ul li:hover {
+      text-decoration: underline;
+    }
+    #map-container {
+      position: relative;
+      flex: 1;
+    }
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+    .earnings-badge {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: black;
+      color: #00ff90;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 18px;
+      z-index: 999;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .start-button {
+      position: absolute;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      cursor: pointer;
+      z-index: 999;
+    }
+    .bottom-bar {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: #fff;
+      border-top: 1px solid #ccc;
+      padding: 15px;
+      font-size: 14px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      z-index: 999;
+    }
+    .bottom-bar strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .heat-label {
+      background-color: rgba(255, 0, 0, 0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .busy-label {
+      background-color: rgba(255, 140, 0, 0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .popup-box {
+      position: absolute;
+      top: 100px;
+      right: 30px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      padding: 15px;
+      z-index: 1000;
+      display: none;
+      width: 250px;
+      font-size: 14px;
+    }
+    .popup-box.active {
+      display: block;
+    }
+    .popup-box h4 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+    }
+    .popup-box button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <!-- Giriş Ekranı -->
-  <div id="login-screen">
-    <div class="login-box">
-      <img src="https://cdn-icons-png.flaticon.com/512/1177/1177568.png" alt="Driver Icon" class="driver-icon" />
-      <h2>Welcome to <span style="color:#007bff">ErX Driver</span></h2>
-      <input type="text" placeholder="Enter your Driver ID" />
-      <button onclick="enterApp()">Login</button>
-    </div>
+  <div id="sidebar">
+    <h2>ErX Driver</h2>
+    <ul>
+      <li>Gelen Kutusu</li>
+      <li>Tavsiyeler</li>
+      <li>Fırsatlar</li>
+      <li>Kazançlar</li>
+      <li>Cüzdan</li>
+      <li>Hesap</li>
+      <hr style="border-color: #444; margin: 12px 0;">
+      <li>Yardım Merkezi</li>
+      <li>Eğitim Merkezi</li>
+      <li>Canlı Destek</li>
+    </ul>
   </div>
-
-  <!-- Uygulama Arayüzü -->
-  <div id="app" style="display:none;">
-    <header>
-      <h1>ErX Driver - Live Map</h1>
-      <button onclick="toggleDarkMode()">🌓</button>
-    </header>
-
+  <div id="map-container">
     <div id="map"></div>
-
-    <div id="controls">
-      <button onclick="startShift()">▶ Start Shift</button>
-      <button onclick="stopShift()">⏹ Stop Shift</button>
+    <div class="earnings-badge">$89.93</div>
+    <button class="start-button">BAŞLA</button>
+    <div class="bottom-bar">
+      <strong>Greater Universal & Disney bölgesindeki yolculukların kazançları yüksek</strong>
+      Bugün araç kullanmaya en uygun olan saatleri ve yerleri keşfedin.
     </div>
-
-    <div id="earnings">
-      <p>Trips Today: <span id="trips">0</span></p>
-      <p>Total Earnings: $<span id="total">0.00</span></p>
+    <div id="popup" class="popup-box">
+      <h4>🚘 Yeni Yolculuk!</h4>
+      <p>7 dakikalık mesafede bir yolcu sizi bekliyor.</p>
+      <button onclick="acceptRide()">Kabul Et</button>
     </div>
   </div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="script.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script>
+    const map = L.map('map').setView([28.3852, -81.5639], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const carIcon = L.icon({
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/854/854894.png',
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
+    });
+
+    const path = [
+      [28.3852, -81.5639],
+      [28.3860, -81.5650],
+      [28.3875, -81.5665],
+      [28.3890, -81.5680],
+      [28.3905, -81.5695]
+    ];
+
+    let carMarker = L.marker(path[0], { icon: carIcon }).addTo(map);
+    let index = 0;
+
+    function moveCar() {
+      index = (index + 1) % path.length;
+      carMarker.setLatLng(path[index]);
+    }
+
+    setInterval(moveCar, 2000);
+
+    const veryBusyPoints = [
+      [28.39, -81.57, 0.8], [28.388, -81.568, 0.7], [28.392, -81.573, 0.9],
+      [28.391, -81.571, 0.85], [28.389, -81.572, 0.88], [28.393, -81.569, 0.8],
+      [28.387, -81.566, 0.75], [28.386, -81.564, 0.82], [28.384, -81.562, 0.78]
+    ];
+
+    L.heatLayer(veryBusyPoints, {
+      radius: 60,
+      blur: 45,
+      gradient: { 0.4: 'orange', 0.7: 'red', 1.0: 'darkred' }
+    }).addTo(map);
+
+    const busyPoints = [
+      [28.381, -81.56, 0.3], [28.382, -81.558, 0.35], [28.383, -81.556, 0.4],
+      [28.384, -81.554, 0.45], [28.385, -81.552, 0.42], [28.386, -81.550, 0.38]
+    ];
+
+    L.heatLayer(busyPoints, {
+      radius: 50,
+      blur: 40,
+      gradient: { 0.4: 'yellow', 0.7: 'orange' }
+    }).addTo(map);
+
+    L.marker([28.39, -81.57]).bindTooltip("<div class='heat-label'>+18 VERY BUSY</div>", { permanent: true, direction: 'top' }).addTo(map);
+    L.marker([28.392, -81.573]).bindTooltip("<div class='heat-label'>+25 VERY BUSY</div>", { permanent: true, direction: 'top' }).addTo(map);
+    L.marker([28.382, -81.558]).bindTooltip("<div class='busy-label'>+6 BUSY</div>", { permanent: true, direction: 'top' }).addTo(map);
+    L.marker([28.385, -81.552]).bindTooltip("<div class='busy-label'>+8 BUSY</div>", { permanent: true, direction: 'top' }).addTo(map);
+
+    // Simülasyon popup
+    setTimeout(() => {
+      document.getElementById('popup').classList.add('active');
+    }, 5000);
+
+    function acceptRide() {
+      document.getElementById('popup').innerHTML = "<h4>🎉 Sipariş Alındı</h4><p>Lütfen yolcuya yönelin...</p>";
+    }
+  </script>
 </body>
 </html>
