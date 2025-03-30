@@ -1,6 +1,6 @@
 let map, userMarker, tripCount = 0, earnings = 0;
 
-// Login işlemi
+// Giriş yapınca app açılıyor
 function enterApp() {
   document.getElementById("login-screen").style.display = "none";
   document.getElementById("app").style.display = "block";
@@ -14,7 +14,7 @@ function initMap() {
     attribution: '&copy; OpenStreetMap contributors',
   }).addTo(map);
 
-  // Araç simgeleri
+  // Araç ikonları
   const carIcon = L.icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/854/854894.png',
     iconSize: [32, 32],
@@ -70,7 +70,7 @@ function updateStats() {
   document.getElementById("total").textContent = earnings.toFixed(2);
 }
 
-// Gece modu
+// Gece modu aç/kapat
 function toggleDarkMode() {
   document.body.classList.toggle("dark-mode");
 }
