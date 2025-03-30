@@ -128,14 +128,16 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Siyah araç ikon
+    // 👇🏻 Araba ikonu (car-icon.png'yi GitHub'a yüklediysen bu çalışır)
     const carIcon = L.icon({
-      iconUrl: 'https://raw.githubusercontent.com/ErX250/ErX-Driver-Aps/main/car-icon.png',
+      iconUrl: 'car-icon.png',
       iconSize: [48, 48],
       iconAnchor: [24, 24],
     });
 
-    const car = L.marker([28.3852, -81.5639], { icon: carIcon }).addTo(map);
+    const car = L.marker([28.3852, -81.5639], {
+      icon: carIcon
+    }).addTo(map);
 
     const route = [
       [28.3852, -81.5639],
@@ -152,7 +154,7 @@
       step = (step + 1) % route.length;
     }, 2000);
 
-    // Heatmap
+    // 🔥 Heatmap
     const heat = L.heatLayer([
       [28.387, -81.561, 0.8],
       [28.388, -81.565, 0.6],
@@ -163,11 +165,11 @@
       gradient: {0.4: 'orange', 0.7: 'red'}
     }).addTo(map);
 
-    // Etiketler
+    // 🏷️ Etiketler
     L.marker([28.388, -81.565]).addTo(map).bindPopup("<b>+6 BUSY</b>");
     L.marker([28.387, -81.561]).addTo(map).bindPopup("<b>+25 VERY BUSY</b>");
 
-    // Yolcu konumu (örnek)
+    // 📍 Yolcu konumu (örnek)
     const passengerLatLng = [28.3905, -81.5600];
     const passengerMarker = L.marker(passengerLatLng, {
       icon: L.icon({
@@ -177,7 +179,7 @@
       })
     }).addTo(map).bindPopup("📍 Yolcu Konumu");
 
-    // Rota çizimi (araçtan yolcuya)
+    // 🛣️ Rota çizgisi (araçtan yolcuya)
     const polyline = L.polyline([route[0], passengerLatLng], {
       color: 'blue',
       weight: 4,
@@ -185,7 +187,7 @@
       dashArray: '6, 6'
     }).addTo(map);
 
-    // Sipariş popup
+    // 📦 Sipariş popup
     setTimeout(() => {
       document.getElementById('orderPopup').style.display = 'block';
     }, 5000);
