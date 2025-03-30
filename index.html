@@ -5,61 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ErX Driver</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-    }
-    #sidebar {
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; }
+
+    #map { height: 100vh; width: 100%; }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 260px;
+      height: 100vh;
       background: #111;
       color: white;
-      height: 100vh;
       padding: 20px;
-      box-sizing: border-box;
+      z-index: 999;
     }
-    #sidebar h2 {
+
+    .sidebar h2 {
       font-size: 20px;
-      margin-bottom: 1rem;
+      margin-bottom: 20px;
     }
-    #sidebar ul {
+
+    .sidebar ul {
       list-style: none;
-      padding: 0;
     }
-    #sidebar ul li {
-      margin-bottom: 12px;
-      font-size: 16px;
+
+    .sidebar li {
+      margin: 12px 0;
+      font-size: 15px;
       cursor: pointer;
     }
-    #sidebar ul li:hover {
-      text-decoration: underline;
-    }
-    #map-container {
-      position: relative;
-      flex: 1;
-    }
-    #map {
-      height: 100vh;
-      width: 100%;
-    }
+
     .earnings-badge {
       position: absolute;
       top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 300px;
       background: black;
       color: #00ff90;
       padding: 10px 20px;
       border-radius: 25px;
       font-weight: bold;
       font-size: 18px;
-      z-index: 999;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      z-index: 998;
     }
+
     .start-button {
       position: absolute;
-      bottom: 100px;
+      bottom: 120px;
       left: 50%;
       transform: translateX(-50%);
       background-color: #007bff;
@@ -71,12 +67,15 @@
       font-weight: bold;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       cursor: pointer;
-      z-index: 999;
+      z-index: 998;
     }
+
     .bottom-bar {
-      position: absolute;
+      position: fixed;
+      left: 260px;
+      right: 0;
       bottom: 0;
-      width: 100%;
+      width: calc(100% - 260px);
       background: #fff;
       border-top: 1px solid #ccc;
       padding: 15px;
@@ -84,58 +83,45 @@
       box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
       z-index: 999;
     }
-    .bottom-bar strong {
-      display: block;
-      margin-bottom: 5px;
-    }
-    .heat-label {
-      background-color: rgba(255, 0, 0, 0.7);
-      color: white;
-      padding: 4px 8px;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: 12px;
-    }
-    .busy-label {
-      background-color: rgba(255, 140, 0, 0.7);
-      color: white;
-      padding: 4px 8px;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: 12px;
-    }
+
     .popup-box {
       position: absolute;
-      top: 100px;
+      top: 80px;
       right: 30px;
-      background: #fff;
+      background: white;
+      padding: 15px 20px;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      padding: 15px;
       z-index: 1000;
       display: none;
-      width: 250px;
-      font-size: 14px;
     }
-    .popup-box.active {
-      display: block;
-    }
-    .popup-box h4 {
-      margin: 0 0 10px 0;
-      font-size: 16px;
-    }
+
     .popup-box button {
-      background: #007bff;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #28a745;
       color: white;
       border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
     }
+
+    .busy-label, .verybusy-label {
+      position: absolute;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-weight: bold;
+      color: white;
+      z-index: 998;
+    }
+
+    .busy-label { background: orange; }
+    .verybusy-label { background: crimson; }
   </style>
 </head>
 <body>
-  <div id="sidebar">
+
+  <div class="sidebar">
     <h2>ErX Driver</h2>
     <ul>
       <li>Gelen Kutusu</li>
@@ -144,96 +130,89 @@
       <li>Kazançlar</li>
       <li>Cüzdan</li>
       <li>Hesap</li>
-      <hr style="border-color: #444; margin: 12px 0;">
+      <hr style="margin: 12px 0; border: none; border-top: 1px solid #555;" />
       <li>Yardım Merkezi</li>
       <li>Eğitim Merkezi</li>
       <li>Canlı Destek</li>
     </ul>
   </div>
-  <div id="map-container">
-    <div id="map"></div>
-    <div class="earnings-badge">$89.93</div>
-    <button class="start-button">BAŞLA</button>
-    <div class="bottom-bar">
-      <strong>Greater Universal & Disney bölgesindeki yolculukların kazançları yüksek</strong>
-      Bugün araç kullanmaya en uygun olan saatleri ve yerleri keşfedin.
-    </div>
-    <div id="popup" class="popup-box">
-      <h4>🚘 Yeni Yolculuk!</h4>
-      <p>7 dakikalık mesafede bir yolcu sizi bekliyor.</p>
-      <button onclick="acceptRide()">Kabul Et</button>
-    </div>
+
+  <div id="map"></div>
+  <div class="earnings-badge">$89.93</div>
+  <button class="start-button" onclick="startTrip()">BAŞLA</button>
+
+  <div class="bottom-bar">
+    <strong>🚀 50 Yolculukta $200 Bonus Kazan!</strong>
+    Aşağıdaki etkinliklerden faydalanarak daha fazla kazanç elde et:
+    <ul style="margin-top: 8px; padding-left: 20px;">
+      <li>🎉 Hafta Sonu Kazanç Etkinliği - Cumartesi & Pazar</li>
+      <li>🌆 Akşam Saatleri Boost - 17:00 - 21:00</li>
+      <li>📍 Disney & Universal bölgesinde +$5 promosyon</li>
+    </ul>
   </div>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <div class="popup-box" id="orderPopup">
+    <strong>📦 Sipariş Alındı</strong><br />
+    Lütfen yolcuya yönelin...
+    <br /><button onclick="hidePopup()">Tamam</button>
+  </div>
+
   <script>
-    const map = L.map('map').setView([28.3852, -81.5639], 13);
+    const map = L.map('map').setView([28.3852, -81.5639], 14);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
+    // Araç simülasyonu
     const carIcon = L.icon({
       iconUrl: 'https://cdn-icons-png.flaticon.com/512/854/854894.png',
       iconSize: [32, 32],
-      iconAnchor: [16, 16]
+      iconAnchor: [16, 16],
     });
 
-    const path = [
+    const car = L.marker([28.3852, -81.5639], { icon: carIcon }).addTo(map);
+    const route = [
       [28.3852, -81.5639],
-      [28.3860, -81.5650],
-      [28.3875, -81.5665],
-      [28.3890, -81.5680],
-      [28.3905, -81.5695]
+      [28.388, -81.565],
+      [28.389, -81.562],
+      [28.387, -81.560],
+      [28.384, -81.561]
     ];
+    let step = 0;
+    setInterval(() => {
+      car.setLatLng(route[step]);
+      step = (step + 1) % route.length;
+    }, 2000);
 
-    let carMarker = L.marker(path[0], { icon: carIcon }).addTo(map);
-    let index = 0;
-
-    function moveCar() {
-      index = (index + 1) % path.length;
-      carMarker.setLatLng(path[index]);
-    }
-
-    setInterval(moveCar, 2000);
-
-    const veryBusyPoints = [
-      [28.39, -81.57, 0.8], [28.388, -81.568, 0.7], [28.392, -81.573, 0.9],
-      [28.391, -81.571, 0.85], [28.389, -81.572, 0.88], [28.393, -81.569, 0.8],
-      [28.387, -81.566, 0.75], [28.386, -81.564, 0.82], [28.384, -81.562, 0.78]
-    ];
-
-    L.heatLayer(veryBusyPoints, {
-      radius: 60,
-      blur: 45,
-      gradient: { 0.4: 'orange', 0.7: 'red', 1.0: 'darkred' }
+    // Heatmap
+    const heat = L.heatLayer([
+      [28.387, -81.561, 0.8],
+      [28.388, -81.565, 0.6],
+      [28.389, -81.562, 0.9],
+    ], {
+      radius: 45,
+      blur: 35,
+      gradient: {0.4: 'orange', 0.7: 'red'}
     }).addTo(map);
 
-    const busyPoints = [
-      [28.381, -81.56, 0.3], [28.382, -81.558, 0.35], [28.383, -81.556, 0.4],
-      [28.384, -81.554, 0.45], [28.385, -81.552, 0.42], [28.386, -81.550, 0.38]
-    ];
+    // Etiketler
+    L.marker([28.388, -81.565]).addTo(map).bindPopup("<b>+6 BUSY</b>").openPopup();
+    L.marker([28.387, -81.561]).addTo(map).bindPopup("<b>+25 VERY BUSY</b>");
 
-    L.heatLayer(busyPoints, {
-      radius: 50,
-      blur: 40,
-      gradient: { 0.4: 'yellow', 0.7: 'orange' }
-    }).addTo(map);
-
-    L.marker([28.39, -81.57]).bindTooltip("<div class='heat-label'>+18 VERY BUSY</div>", { permanent: true, direction: 'top' }).addTo(map);
-    L.marker([28.392, -81.573]).bindTooltip("<div class='heat-label'>+25 VERY BUSY</div>", { permanent: true, direction: 'top' }).addTo(map);
-    L.marker([28.382, -81.558]).bindTooltip("<div class='busy-label'>+6 BUSY</div>", { permanent: true, direction: 'top' }).addTo(map);
-    L.marker([28.385, -81.552]).bindTooltip("<div class='busy-label'>+8 BUSY</div>", { permanent: true, direction: 'top' }).addTo(map);
-
-    // Simülasyon popup
+    // Sipariş popup
     setTimeout(() => {
-      document.getElementById('popup').classList.add('active');
+      document.getElementById('orderPopup').style.display = 'block';
     }, 5000);
 
-    function acceptRide() {
-      document.getElementById('popup').innerHTML = "<h4>🎉 Sipariş Alındı</h4><p>Lütfen yolcuya yönelin...</p>";
+    function hidePopup() {
+      document.getElementById('orderPopup').style.display = 'none';
+    }
+
+    function startTrip() {
+      alert("Sürüş başlatıldı!");
     }
   </script>
+
 </body>
 </html>
