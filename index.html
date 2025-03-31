@@ -10,33 +10,33 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; }
-    #map { height: 100vh; width: 100%; }
 
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 260px;
+    /* Beyaz arka plan sayfası */
+    .landing-page {
       height: 100vh;
-      background: #111;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .landing-page button {
+      background-color: #007bff;
       color: white;
-      padding: 20px;
-      z-index: 999;
-    }
-
-    .sidebar h2 {
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-
-    .sidebar ul {
-      list-style: none;
-    }
-
-    .sidebar li {
-      margin: 12px 0;
-      font-size: 15px;
+      padding: 15px 30px;
+      font-size: 18px;
+      margin: 10px;
       cursor: pointer;
+      border-radius: 50px;
+      border: none;
+    }
+
+    /* Map Container */
+    #map {
+      height: 100vh;
+      display: none;
     }
 
     .earnings-badge {
@@ -111,60 +111,22 @@
       border-radius: 50px;
     }
 
-    /* Driver formu */
-    #driverForm {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 1000;
-    }
-
-    #driverForm input, #driverForm button {
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      font-size: 16px;
-    }
-
-    #loginForm {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 1000;
-    }
-
-    #loginForm input, #loginForm button {
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      font-size: 16px;
-    }
-
-    .earnings-badge {
+    #loginForm, #driverForm {
       display: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- START: YOLCU VE DRIVER SEÇİM EKRANI -->
-  <div class="main-selection" id="mainSelection">
+  <!-- Beyaz başlangıç sayfası -->
+  <div class="landing-page" id="landingPage">
+    <h1>Hoş Geldiniz</h1>
     <button onclick="startAsPassenger()">Ben Bir Yolcuyum</button>
     <button onclick="startAsDriver()">Ben Bir Driver'ım</button>
   </div>
-  <!-- END: YOLCU VE DRIVER SEÇİM EKRANI -->
+
+  <!-- Map -->
+  <div id="map"></div>
 
   <!-- START: DRIVER GİRİŞ VE KAYIT FORMU -->
   <div id="loginForm">
@@ -192,7 +154,6 @@
   </div>
   <!-- END: DRIVER GİRİŞ VE KAYIT FORMU -->
 
-  <div id="map"></div>
   <div class="earnings-badge" id="earningsBadge">$89.93</div> <!-- Kazanç sadece driver için görünecek -->
   <button class="start-button" onclick="startTrip()">BAŞLA</button>
 
@@ -216,6 +177,8 @@
         alert('Giriş başarılı!');
         document.querySelector('#loginForm').style.display = 'none';
         document.querySelector('#earningsBadge').style.display = 'block'; // Kazancı göster
+        document.getElementById('map').style.display = 'block'; // Harita görünsün
+        document.getElementById('landingPage').style.display = 'none'; // Landing page gizlensin
       } else {
         alert('Hatalı ID veya Şifre');
       }
@@ -252,6 +215,8 @@
     function startAsPassenger() {
       alert("Yolcu olarak giriş yapıyorsunuz");
       document.getElementById('earningsBadge').style.display = 'none'; // Kazanç görünmesin
+      document.getElementById('landingPage').style.display = 'none'; // Landing page gizlensin
+      document.getElementById('map').style.display = 'block'; // Harita görünsün
     }
 
     function startAsDriver() {
