@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ErX Driver</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <title>ErX - Hoş Geldin</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; height: 100vh; margin: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
 
-    /* Beyaz ve modern giriş sayfası */
-    .landing-page {
+    body {
+      background-color: #ffffff;
+      color: #111;
       height: 100vh;
-      background-color: #f4f4f9;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -23,227 +24,70 @@
       padding: 20px;
     }
 
-    .landing-page h1 {
-      font-size: 36px;
-      margin-bottom: 20px;
-      color: #333;
+    h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+      color: #222;
     }
 
-    .landing-page button {
+    p {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 15px 35px;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn.passenger {
       background-color: #007bff;
       color: white;
-      padding: 15px 40px;
-      font-size: 18px;
-      margin: 10px;
-      cursor: pointer;
-      border-radius: 50px;
-      border: none;
-      transition: background-color 0.3s;
     }
 
-    .landing-page button:hover {
+    .btn.passenger:hover {
       background-color: #0056b3;
     }
 
-    /* Map Container */
-    #map {
-      height: 100vh;
-      display: none; /* İlk başta harita görünmesin */
-    }
-
-    .earnings-badge {
-      position: absolute;
-      top: 20px;
-      left: 300px;
-      background: black;
-      color: #00ff90;
-      padding: 10px 20px;
-      border-radius: 25px;
-      font-weight: bold;
-      font-size: 18px;
-      z-index: 998;
-    }
-
-    .start-button {
-      position: absolute;
-      bottom: 120px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #007bff;
+    .btn.driver {
+      background-color: #28a745;
       color: white;
-      border: none;
-      padding: 14px 28px;
-      border-radius: 50px;
-      font-size: 18px;
-      font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      cursor: pointer;
-      z-index: 998;
     }
 
-    .popup-box {
-      position: absolute;
-      top: 80px;
-      right: 30px;
-      background: white;
-      padding: 15px 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 1000;
-      display: none;
+    .btn.driver:hover {
+      background-color: #1e7e34;
     }
 
-    .popup-box button {
-      margin-top: 10px;
-      padding: 8px 16px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
+    @media (max-width: 600px) {
+      h1 { font-size: 32px; }
+      p { font-size: 16px; }
+      .btn { width: 100%; }
+      .button-group { flex-direction: column; }
     }
-
-    /* Responsive tasarım */
-    @media (max-width: 768px) {
-      .landing-page h1 {
-        font-size: 28px;
-      }
-
-      .landing-page button {
-        padding: 12px 30px;
-        font-size: 16px;
-      }
-    }
-
   </style>
 </head>
 <body>
 
-  <!-- Beyaz ve şık başlangıç sayfası -->
-  <div class="landing-page" id="landingPage">
-    <h1>Hoş Geldiniz</h1>
-    <button onclick="startAsPassenger()">Ben Bir Yolcuyum</button>
-    <button onclick="startAsDriver()">Ben Bir Driver'ım</button>
+  <h1>ErX'e Hoş Geldin</h1>
+  <p>Seyahatini seç: Yolcu musun yoksa direksiyonda mısın?</p>
+
+  <div class="button-group">
+    <button class="btn passenger" onclick="window.location.href='passenger.html'">Ben Bir Yolcuyum</button>
+    <button class="btn driver" onclick="window.location.href='driver.html'">Ben Bir Driver'ım</button>
   </div>
-
-  <!-- Harita (Başlangıçta gizli olacak) -->
-  <div id="map"></div>
-
-  <!-- START: DRIVER GİRİŞ VE KAYIT FORMU -->
-  <div id="loginForm">
-    <h2>Giriş Yap</h2>
-    <form>
-      <input type="text" id="driverID" placeholder="ID" required><br>
-      <input type="password" id="driverPassword" placeholder="Şifre" required><br>
-      <button type="submit" onclick="checkLogin(event)">Giriş Yap</button>
-    </form>
-    <button onclick="showDriverRegisterForm()">Kayıt Ol</button>
-  </div>
-
-  <div id="driverForm">
-    <h2>Driver Kayıt Formu</h2>
-    <form>
-      <input type="text" placeholder="Ad Soyad" required><br>
-      <input type="text" placeholder="Telefon Numarası" required><br>
-      <input type="email" placeholder="E-posta" required><br>
-      <input type="text" placeholder="Sosyal Güvenlik Numarası" required><br>
-      <input type="text" placeholder="Adres" required><br> <!-- Adres artık zorunlu -->
-      <input type="file" accept="image/*" placeholder="Ehliyet Fotoğrafı" required><br>
-      <button type="submit">Başvuruyu Gönder</button>
-    </form>
-    <button onclick="backToLoginForm()">Zaten Kayıtlı Mıyım? Giriş Yap</button>
-  </div>
-  <!-- END: DRIVER GİRİŞ VE KAYIT FORMU -->
-
-  <div class="earnings-badge" id="earningsBadge">$89.93</div> <!-- Kazanç sadece driver için görünecek -->
-  <button class="start-button" onclick="startTrip()">BAŞLA</button>
-
-  <div class="popup-box" id="orderPopup">
-    <strong>📦 Sipariş Alındı</strong><br />
-    Lütfen yolcuya yönelin...
-    <br /><button onclick="hidePopup()">Tamam</button>
-  </div>
-
-  <script>
-    let driverLoggedIn = false; // Giriş yapan driver kontrolü
-
-    // Giriş kontrol fonksiyonu
-    function checkLogin(event) {
-      event.preventDefault();
-      const driverID = document.getElementById('driverID').value;
-      const driverPassword = document.getElementById('driverPassword').value;
-
-      if (driverID === "driver1234" && driverPassword === "1234") {
-        driverLoggedIn = true;
-        alert('Giriş başarılı!');
-        document.querySelector('#loginForm').style.display = 'none';
-        document.querySelector('#earningsBadge').style.display = 'block'; // Kazancı göster
-        document.getElementById('map').style.display = 'block'; // Harita görünsün
-        document.getElementById('landingPage').style.display = 'none'; // Landing page gizlensin
-      } else {
-        alert('Hatalı ID veya Şifre');
-      }
-    }
-
-    const map = L.map('map').setView([28.3852, -81.5639], 15);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    const carIcon = L.icon({
-      iconUrl: 'car-icon.png', 
-      iconSize: [48, 48],
-      iconAnchor: [24, 24],
-    });
-
-    const car = L.marker([28.3852, -81.5639], { icon: carIcon }).addTo(map);
-    const route = [
-      [28.3852, -81.5639],
-      [28.3870, -81.5645],
-      [28.3885, -81.5620],
-      [28.3860, -81.5605],
-      [28.3840, -81.5618]
-    ];
-
-    let step = 0;
-    setInterval(() => {
-      car.setLatLng(route[step]);
-      map.panTo(route[step]);
-      step = (step + 1) % route.length;
-    }, 2000);
-
-    function startAsPassenger() {
-      alert("Yolcu olarak giriş yapıyorsunuz");
-      document.getElementById('earningsBadge').style.display = 'none'; // Kazanç görünmesin
-      document.getElementById('landingPage').style.display = 'none'; // Landing page gizlensin
-      document.getElementById('map').style.display = 'block'; // Harita görünsün
-    }
-
-    function startAsDriver() {
-      document.querySelector('#mainSelection').style.display = 'none';
-      document.querySelector('#loginForm').style.display = 'block'; // Giriş formunu göster
-      document.getElementById('earningsBadge').style.display = 'block'; // Kazanç görünür
-    }
-
-    function showDriverRegisterForm() {
-      document.querySelector('#loginForm').style.display = 'none';
-      document.querySelector('#driverForm').style.display = 'block'; // Kayıt formunu göster
-    }
-
-    function backToLoginForm() {
-      document.querySelector('#driverForm').style.display = 'none';
-      document.querySelector('#loginForm').style.display = 'block'; // Geri dön giriş formuna
-    }
-
-    function startTrip() {
-      alert("Sürüş başlatıldı!");
-    }
-
-    function hidePopup() {
-      document.getElementById('orderPopup').style.display = 'none';
-    }
-  </script>
 
 </body>
 </html>
