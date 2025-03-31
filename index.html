@@ -131,6 +131,26 @@
       padding: 10px;
       font-size: 16px;
     }
+
+    #loginForm {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    #loginForm input, #loginForm button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -142,7 +162,17 @@
   </div>
   <!-- END: YOLCU VE DRIVER SEÇİM EKRANI -->
 
-  <!-- START: DRIVER KAYIT FORMU -->
+  <!-- START: DRIVER GİRİŞ VE KAYIT FORMU -->
+  <div id="loginForm">
+    <h2>Giriş Yap</h2>
+    <form>
+      <input type="text" placeholder="ID" required><br>
+      <input type="password" placeholder="Şifre" required><br>
+      <button type="submit">Giriş Yap</button>
+    </form>
+    <button onclick="showDriverRegisterForm()">Kayıt Ol</button>
+  </div>
+
   <div id="driverForm">
     <h2>Driver Kayıt Formu</h2>
     <form>
@@ -154,8 +184,9 @@
       <input type="file" accept="image/*" placeholder="Ehliyet Fotoğrafı" required><br>
       <button type="submit">Başvuruyu Gönder</button>
     </form>
+    <button onclick="backToLoginForm()">Zaten Kayıtlı Mıyım? Giriş Yap</button>
   </div>
-  <!-- END: DRIVER KAYIT FORMU -->
+  <!-- END: DRIVER GİRİŞ VE KAYIT FORMU -->
 
   <div id="map"></div>
   <div class="earnings-badge">$89.93</div>
@@ -202,8 +233,18 @@
     }
 
     function startAsDriver() {
-      document.querySelector('#driverForm').style.display = 'block';
       document.querySelector('#mainSelection').style.display = 'none';
+      document.querySelector('#loginForm').style.display = 'block'; // Giriş formunu göster
+    }
+
+    function showDriverRegisterForm() {
+      document.querySelector('#loginForm').style.display = 'none';
+      document.querySelector('#driverForm').style.display = 'block'; // Kayıt formunu göster
+    }
+
+    function backToLoginForm() {
+      document.querySelector('#driverForm').style.display = 'none';
+      document.querySelector('#loginForm').style.display = 'block'; // Geri dön giriş formuna
     }
 
     function startTrip() {
