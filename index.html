@@ -9,34 +9,46 @@
   <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; }
+    body { font-family: Arial, sans-serif; height: 100vh; margin: 0; }
 
-    /* Beyaz arka plan sayfası */
+    /* Beyaz ve modern giriş sayfası */
     .landing-page {
       height: 100vh;
-      background-color: white;
+      background-color: #f4f4f9;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
       text-align: center;
+      padding: 20px;
+    }
+
+    .landing-page h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: #333;
     }
 
     .landing-page button {
       background-color: #007bff;
       color: white;
-      padding: 15px 30px;
+      padding: 15px 40px;
       font-size: 18px;
       margin: 10px;
       cursor: pointer;
       border-radius: 50px;
       border: none;
+      transition: background-color 0.3s;
+    }
+
+    .landing-page button:hover {
+      background-color: #0056b3;
     }
 
     /* Map Container */
     #map {
       height: 100vh;
-      display: none;
+      display: none; /* İlk başta harita görünmesin */
     }
 
     .earnings-badge {
@@ -91,41 +103,29 @@
       cursor: pointer;
     }
 
-    /* Giriş ekranı */
-    .main-selection {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 999;
-    }
+    /* Responsive tasarım */
+    @media (max-width: 768px) {
+      .landing-page h1 {
+        font-size: 28px;
+      }
 
-    .main-selection button {
-      background-color: #007bff;
-      color: white;
-      padding: 15px 30px;
-      font-size: 18px;
-      margin: 10px;
-      cursor: pointer;
-      border-radius: 50px;
-    }
-
-    #loginForm, #driverForm {
-      display: none;
+      .landing-page button {
+        padding: 12px 30px;
+        font-size: 16px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Beyaz başlangıç sayfası -->
+  <!-- Beyaz ve şık başlangıç sayfası -->
   <div class="landing-page" id="landingPage">
     <h1>Hoş Geldiniz</h1>
     <button onclick="startAsPassenger()">Ben Bir Yolcuyum</button>
     <button onclick="startAsDriver()">Ben Bir Driver'ım</button>
   </div>
 
-  <!-- Map -->
+  <!-- Harita (Başlangıçta gizli olacak) -->
   <div id="map"></div>
 
   <!-- START: DRIVER GİRİŞ VE KAYIT FORMU -->
