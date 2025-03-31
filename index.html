@@ -151,6 +151,10 @@
       padding: 10px;
       font-size: 16px;
     }
+
+    .earnings-badge {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -189,7 +193,7 @@
   <!-- END: DRIVER GİRİŞ VE KAYIT FORMU -->
 
   <div id="map"></div>
-  <div class="earnings-badge">$89.93</div>
+  <div class="earnings-badge" id="earningsBadge">$89.93</div> <!-- Kazanç sadece driver için görünecek -->
   <button class="start-button" onclick="startTrip()">BAŞLA</button>
 
   <div class="popup-box" id="orderPopup">
@@ -229,12 +233,13 @@
 
     function startAsPassenger() {
       alert("Yolcu olarak giriş yapıyorsunuz");
-      // Burada yolcu yönlendirmesini yapabilirsin
+      document.getElementById('earningsBadge').style.display = 'none'; // Kazanç görünmesin
     }
 
     function startAsDriver() {
       document.querySelector('#mainSelection').style.display = 'none';
       document.querySelector('#loginForm').style.display = 'block'; // Giriş formunu göster
+      document.getElementById('earningsBadge').style.display = 'block'; // Kazanç görünür
     }
 
     function showDriverRegisterForm() {
