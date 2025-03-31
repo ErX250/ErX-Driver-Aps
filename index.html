@@ -170,9 +170,9 @@
   <div id="loginForm">
     <h2>Giriş Yap</h2>
     <form>
-      <input type="text" placeholder="ID" required><br>
-      <input type="password" placeholder="Şifre" required><br>
-      <button type="submit">Giriş Yap</button>
+      <input type="text" id="driverID" placeholder="ID" required><br>
+      <input type="password" id="driverPassword" placeholder="Şifre" required><br>
+      <button type="submit" onclick="checkLogin(event)">Giriş Yap</button>
     </form>
     <button onclick="showDriverRegisterForm()">Kayıt Ol</button>
   </div>
@@ -203,6 +203,24 @@
   </div>
 
   <script>
+    let driverLoggedIn = false; // Giriş yapan driver kontrolü
+
+    // Giriş kontrol fonksiyonu
+    function checkLogin(event) {
+      event.preventDefault();
+      const driverID = document.getElementById('driverID').value;
+      const driverPassword = document.getElementById('driverPassword').value;
+
+      if (driverID === "driver1234" && driverPassword === "1234") {
+        driverLoggedIn = true;
+        alert('Giriş başarılı!');
+        document.querySelector('#loginForm').style.display = 'none';
+        document.querySelector('#earningsBadge').style.display = 'block'; // Kazancı göster
+      } else {
+        alert('Hatalı ID veya Şifre');
+      }
+    }
+
     const map = L.map('map').setView([28.3852, -81.5639], 15);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
